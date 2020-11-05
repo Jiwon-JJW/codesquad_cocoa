@@ -2,7 +2,7 @@ import java.util.*;
 public class Monster extends Unit {
 
     Random random = new Random();
-
+    
     public void initMonster() {
         Bomb bomb = new Bomb();
         while (true) {

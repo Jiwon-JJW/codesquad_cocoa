@@ -55,7 +55,21 @@ public class Character extends Unit {
                 CharacterRight();
                 return;
             }
+
+            if (move.equalsIgnoreCase("1")){
+                return;
+            }
+            if (move.equalsIgnoreCase("0")){
+                return;
+            }
+
+            else {
+                System.out.println("잘못 입력하셨습니다. 올바른 키를 입력해주세요.");
+                return;
+            }
+
         }
+
     }
 
 
