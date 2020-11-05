@@ -1,4 +1,4 @@
-abstract class Unit {
+ class Unit {
     protected int x;
     protected int y;
     protected int stage;
