@@ -1,18 +1,20 @@
 import java.util.Random;
 
-public class Bomb extends moveUnit{
+public class Bomb extends Unit {
     Random random = new Random();
 
     public void initBomb(){
+        Monster monster = new Monster();
         while (true) {
-            setBombx(random.nextInt(11));
-            setBomby(random.nextInt(11));
-            if (super.Bombx != 5 && super.Bomby != 5) {
-                if (super.Monsterx != super.Bombx && super.Monstery != super.Bomby){
+            setX(random.nextInt(10));
+            setY(random.nextInt(10));
+            if (x != 5 && y != 5) {
+                if (x != monster.x && y != monster.y){
                     break;
                 }
             }
         }
     }
+
 
 }
