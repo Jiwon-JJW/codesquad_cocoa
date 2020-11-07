@@ -41,8 +41,7 @@ public class RPGGame {
 
             map.FieldSize[character.getX()][character.getY()]=".";
             character.moveinput(characterMove);
-            map.CharacterMove(character);
-            map.PrintField();
+            map.Character(character);
             Status();
 
         }
@@ -53,14 +52,16 @@ public class RPGGame {
         character.initCharacter();
         monster.initMonster();
 
-        map.initField(character,monster);
+        map.initField();
         map.AddBombField(bomb);
         if(character.getStage()>1){
             for(int i = 1;i<character.getStage();i++){
                 map.AddBombField(bomb);
             }
         }
-        map.PrintField();
+        map.Monster(monster);
+        map.Character(character);
+
     }
 
 
