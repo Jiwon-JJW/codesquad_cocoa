@@ -1,17 +1,11 @@
-import java.util.Scanner;
-
 public class AccountBook {
-    Scanner scanner = new Scanner(System.in);
-    static UserAccount userAccount;
-    static Data data;
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        UserAccount userAccount = new UserAccount();
+        Menu menu = new Menu();
         Data data = new Data();
+        UserAccount userAccount = new UserAccount();
 
-            userAccount.Login();
+        menu.UserMenu();
 
-            data.MenuSelect();
     }
 }

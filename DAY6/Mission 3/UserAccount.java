@@ -5,6 +5,7 @@ public class UserAccount {
     private String UserName;
     private String PassWord;
     HashMap<String,String> User = new HashMap<>();
+    static Menu menu;
 
     public String getUserName() {
         return UserName;
@@ -21,6 +22,8 @@ public class UserAccount {
     public void setPassWord(String passWord) {
         PassWord = passWord;
     }
+
+
     public void initUser(){
         User.put("project","cocoa");
     }
@@ -34,6 +37,8 @@ public class UserAccount {
         this.setPassWord(scanner.nextLine());
 
         User.put(this.getUserName(),this.getPassWord());
+        System.out.println("메인 화면으로 돌아갑니다.");
+        menu.UserMenu();
 
         }
 
@@ -54,22 +59,25 @@ public class UserAccount {
 
             initUser();
 
-            System.out.println("UserName: ");
+            System.out.print("UserName: ");
             String UserName=scanner.nextLine();
 
-            System.out.println("PassWord: ");
+            System.out.print("PassWord: ");
             String PassWord=scanner.nextLine();
 
             if(AccountCheck(UserName,PassWord)==false){
-                System.out.println("회원가입 하시겠습니까?(Y/N)");
+                System.out.println("회원가입 하시겠습니까?(1.Yes/2.No)");
                 System.out.print("> ");
-                String answer = scanner.nextLine();
 
-                if(answer.equalsIgnoreCase("Y")) {
+                if(scanner.nextInt()==1) {
                     UserAccountIn();
                     return;
                 }
+                if(scanner.nextInt()==2){
+                    menu.UserMenu();
+                }
             }
 
+            menu.MenuSelect();
         }
     }
