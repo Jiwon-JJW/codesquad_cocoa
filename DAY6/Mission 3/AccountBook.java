@@ -5,7 +5,7 @@ public class AccountBook {
         Data data = new Data();
         UserAccount userAccount = new UserAccount();
 
-        menu.UserMenu();
+        Menu.UserMenu();
 
     }
 }

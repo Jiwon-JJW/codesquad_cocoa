@@ -38,17 +38,17 @@ public class UserAccount {
 
         User.put(this.getUserName(),this.getPassWord());
         System.out.println("메인 화면으로 돌아갑니다.");
-        menu.UserMenu();
+        Menu.UserMenu();
 
         }
 
         public boolean AccountCheck(String ID, String PW) {
 
-            if(User.containsKey(ID)==false||User.containsValue(PW)==false){
+            if(!User.containsKey(ID) || !User.containsValue(PW)){
                 System.out.println("유저 이름 혹은 비밀번호가 잘못되었습니다.");
                 return false;
             }
-            if(User.containsKey(ID)==true&&User.containsValue(PW)==true){
+            if(User.containsKey(ID) && User.containsValue(PW)){
                 return true;
             }
             return true;
@@ -65,7 +65,7 @@ public class UserAccount {
             System.out.print("PassWord: ");
             String PassWord=scanner.nextLine();
 
-            if(AccountCheck(UserName,PassWord)==false){
+            if(!AccountCheck(UserName, PassWord)){
                 System.out.println("회원가입 하시겠습니까?(1.Yes/2.No)");
                 System.out.print("> ");
 
@@ -74,10 +74,10 @@ public class UserAccount {
                     return;
                 }
                 if(scanner.nextInt()==2){
-                    menu.UserMenu();
+                    Menu.UserMenu();
                 }
             }
 
-            menu.MenuSelect();
+            Menu.MenuSelect();
         }
     }
