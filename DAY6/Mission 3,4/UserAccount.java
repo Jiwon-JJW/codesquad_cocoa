@@ -1,3 +1,5 @@
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -5,7 +7,6 @@ public class UserAccount {
     private String UserName;
     private String PassWord;
     HashMap<String,String> User = new HashMap<>();
-    static Menu menu;
 
     public String getUserName() {
         return UserName;
@@ -24,11 +25,11 @@ public class UserAccount {
     }
 
 
-    public void initUser(){
+    public void initUser() {
         User.put("project","cocoa");
     }
 
-    public void UserAccountIn(){
+    public void UserAccountIn() throws IOException {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("UserName: ");
@@ -48,13 +49,10 @@ public class UserAccount {
                 System.out.println("유저 이름 혹은 비밀번호가 잘못되었습니다.");
                 return false;
             }
-            if(User.containsKey(ID) && User.containsValue(PW)){
-                return true;
-            }
             return true;
         }
 
-        public void Login(){
+        public void Login() throws IOException {
             Scanner scanner = new Scanner(System.in);
 
             initUser();
