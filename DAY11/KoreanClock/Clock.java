@@ -1,14 +1,11 @@
-import java.util.Calendar;
+import java.sql.Timestamp;
 
 public class Clock {
     public static void main(String[] args) {
-        ClockSetting clockSetting = new ClockSetting();
-        Calendar today = Calendar.getInstance();
+        Time t = new Time();
 
-        int hour = today.get(Calendar.HOUR_OF_DAY);
-        int minute = today.get(Calendar.MINUTE);
+            t.start();
+            Timestamp time = new Timestamp(System.currentTimeMillis());
+        }
 
-        clockSetting.InitClock(hour,minute);
-
-    }
 }

@@ -1,13 +1,24 @@
+import java.util.Calendar;
+
 public class ClockSetting {
 
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RESET = "\u001B[0m";
 
-    static String[] arr = {"한", "두", "세", "네", "다", "섯", "여", "섯", "일", "곱", "여", "덟", "아", "홉", "열", "한", "두", "시", "자",
-            "이", "삼", "사", "오", "십", "정", "일", "이", "삼", "사", "오", "오", "육", "칠", "팔", "구", "분"};
+     String[] arr = {"한", "두", "세", "네", "다", "섯",
+            "여", "섯", "일", "곱", "여", "덟",
+            "아", "홉", "열", "한", "두", "시",
+            "자", "이", "삼", "사", "오", "십",
+            "정", "일", "이", "삼", "사", "오",
+            "오", "육", "칠", "팔", "구", "분"};
 
-    public void InitClock(int hour, int minute) {
 
+    public void InitClock() {
+        Calendar today = Calendar.getInstance();
+        int hour = today.get(Calendar.HOUR_OF_DAY);
+        int minute = today.get(Calendar.MINUTE);
+
+        ResetColor();
         for (int i = 1; i <= 36; i++) {
             HourColor(hour);
             MinuteColor(minute);
@@ -18,9 +29,7 @@ public class ClockSetting {
         }
     }
 
-
-    public static void HourColor(int hour) {
-
+    public void HourColor(int hour) {
         arr[17] = ANSI_GREEN + arr[17] + ANSI_RESET;
         switch (hour) {
             case 0 -> {
@@ -76,6 +85,7 @@ public class ClockSetting {
                 break;
             }
             case 11, 23 -> {
+                arr[14] = ANSI_GREEN + arr[14] + ANSI_RESET;
                 arr[15] = ANSI_GREEN + arr[15] + ANSI_RESET;
                 break;
             }
@@ -89,14 +99,13 @@ public class ClockSetting {
         }
     }
 
-
-    public static void MinuteColor(int minute){
-
-
+    public void MinuteColor(int minute){
         int m2 = minute/10;// 분의 10의 자리 수
         int m1 =minute%10;// 분의 1의 자리수
 
-        arr[35] = ANSI_GREEN + arr[35] + ANSI_RESET;
+        if(minute>0) {
+            arr[35] = ANSI_GREEN + arr[35] + ANSI_RESET;
+        }
 
         switch (m1) {
             case 1 -> {
@@ -164,4 +173,12 @@ public class ClockSetting {
         }
 
     }
+
+    public void ResetColor(){
+        String s = "한,두,세,네,다,섯,여,섯,일,곱,여,덟,아,홉,열,한,두,시,자,이,삼,사,오,십,정,일,이,삼,사,오,오,육,칠,팔,구,분";
+
+        arr = s.split(",");
+    }
+
 }
+
