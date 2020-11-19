@@ -55,8 +55,6 @@ public class Cal {
         Year y = new Year(inputYear);
         Month m = new Month(inputMonth);
 
-        System.out.println(y.year);
-        System.out.println(m.month);
         settingcal(y.year, m.month);
         }
 
