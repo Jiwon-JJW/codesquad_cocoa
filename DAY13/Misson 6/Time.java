@@ -1,20 +1,25 @@
-import java.io.IOException;
+import java.time.LocalTime;
+import java.util.Calendar;
 
 public class Time extends Thread {
-    @Override
 
     public void run() {
         ClockSetting clockSetting = new ClockSetting();
+        Calendar c = Calendar.getInstance();
 
-        while (true) {
-            clockSetting.InitClock();
-            System.out.println("==============");
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
 
-            try {
-                Thread.sleep(1000);
-            } catch (Exception ex) {
-            }
+                clockSetting.InitClock();
+                System.out.println("==============");
+                double second = Double.parseDouble(String.valueOf(LocalTime.now()).split(":")[2]);
 
+                Thread.sleep(60000 - (int)(second*1000));
+                }
+            } catch (InterruptedException e) {
+        }
+        finally {
+            Main.returnMenu();
         }
     }
 }

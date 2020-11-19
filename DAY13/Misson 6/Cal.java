@@ -1,4 +1,5 @@
 import java.util.Calendar;
+import java.util.Scanner;
 
 class Year {
     Calendar c = Calendar.getInstance();
@@ -24,30 +25,59 @@ class Month {
 }
 
 public class Cal {
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_RESET = "\u001B[0m";
+    Scanner scanner = new Scanner(System.in);
 
-    Year y = new Year(0);
-    Month m = new Month(0);
-    Calendar c = Calendar.getInstance();
+    public void calMenu(){
 
-    public void initcal(){
-        // 시작일을 설정하는 메소드
-        c.set(y.year, m.month-1, 1);
-        int START_DAY_OF_WEEK = c.get(Calendar.DAY_OF_WEEK);
+        int inputYear=0;
+        int inputMonth=0;
 
-        // 끝일을 설정하는 메소드
-        c.set(y.year, m.month, 1);
-        c.add(Calendar.DATE, -1);
-        int END_DAY = c.get(Calendar.DATE);
+        System.out.println("달력을 출력하는 옵션을 선택하여 주세요.");
+        System.out.println("  1.현재 달력 | 2.날짜 지정");
+        System.out.print("> ");
+        switch (scanner.nextInt()) {
+            case 1 -> {
+                inputYear = 0;
+                inputMonth = 0;
+                break;
+            }
+            case 2 -> {
+                System.out.println("원하시는 년도를 입력하여 주세요.");
+                System.out.print("> ");
+                inputYear = scanner.nextInt();
 
-        printcal(START_DAY_OF_WEEK, END_DAY);
+                System.out.println("원하시는 달을 입력하여 주세요.");
+                System.out.print("> ");
+                inputMonth = scanner.nextInt();
+                break;
+            }
+        }
+        Year y = new Year(inputYear);
+        Month m = new Month(inputMonth);
 
+        System.out.println(y.year);
+        System.out.println(m.month);
+        settingcal(y.year, m.month);
         }
 
-    public void printcal(int sDay,int eDay) {
+
+    public void settingcal(int y,int m){
+        Calendar c = Calendar.getInstance();
+
+        c.set(y, m-1, 1);
+        int startDayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+
+        int endDay = c.getActualMaximum(Calendar.DATE);
+
         System.out.println("=====================");
-        System.out.printf("%9d년 %3d월 %n",y.year,m.month);
+        System.out.printf("%9d년 %3d월 %n",y,m);
+        printcal(startDayOfWeek, endDay);
+
+        Main.returnMenu();
+    }
+
+
+    public void printcal(int sDay,int eDay) {
         System.out.println(" SU MO TU WE TH FR SA");
         System.out.println("---------------------");
         for (int i = 1; i < sDay; i++)
