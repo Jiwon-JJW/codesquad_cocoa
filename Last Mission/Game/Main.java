@@ -6,7 +6,11 @@ public class Main {
     static Monster monster = new Monster();
     static Bomb bomb = new Bomb();
 
+
     public static void main(String[] args) {
+
+        // TODO: GUI 구현하기
+
         user.initStage();
 
         menu();
@@ -19,7 +23,7 @@ public class Main {
 
             move();
 
-            checkStatus();
+
         }
 
     }
@@ -27,6 +31,7 @@ public class Main {
     public static void move(){
         map.mapSize[user.x][user.y] = " . ";
         user.moveUser();
+        checkStatus();
         map.mapSize[user.x][user.y] = " @ ";
     }
 
@@ -36,18 +41,24 @@ public class Main {
 
         System.out.println("========================================");
         System.out.println("               RPG GAME");
+        System.out.println("       최대 스코어  : "+ user.bestScore);
         System.out.println("| W: UP | A: LEFT | S: DOWN | D: RIGHT |");
         System.out.println("|   GAME START: 1 |   GAME FINISH: 0   |");
         System.out.println("========================================");
         System.out.print("> ");
-        int start = scanner.nextInt();
+        while (true) {
+            int start = scanner.nextInt();
 
-        if(start == 1){
-            settingField();
-        }
-        if(start == 0){
-            System.exit(0);
-            return;
+            if (start == 1) {
+                settingField();
+                break;
+            }
+            if (start == 0) {
+                System.exit(0);
+                return;
+            } else {
+                System.out.println(" 잘못 입력하셨습니다.");
+            }
         }
     }
 
@@ -61,12 +72,11 @@ public class Main {
     public static void settingField(){
         user.initUser();
         monster.initMonster();
-        bomb.initBomb(monster);
+        bomb.initBomb();
         map.initMap(user,monster,bomb);
 
         if(user.score>1){
             for (int i = 1; i< user.score; i++) {
-                bomb.initBomb(monster);
                 map.addBomb(bomb);
             }
         }
@@ -77,6 +87,7 @@ public class Main {
 
         if(user.x == monster.x && user.y == monster.y){
             System.out.println("게임에서 이겼습니다!");
+            user.bestScore = user.score;
             user.score++;
 
             while (true) {
@@ -89,20 +100,21 @@ public class Main {
                 }
                 if (answer == 0) {
                     System.exit(0);
+                    return;
                 } else {
                     System.out.println("잘못 입력하셨습니다. 다시 입력해주세요");
                 }
             }
 
         }
-
-        if(user.x == bomb.x && user.y == bomb.y){
+        if(map.mapSize[user.x][user.y].equalsIgnoreCase(" ! ")){
             System.out.println("게임에서 졌습니다!");
             while (true) {
                 System.out.println("계속 하시겠습니까?");
                 System.out.println("yes : 1 | no : 0");
                 int answer = scanner.nextInt();
                 if (answer == 1) {
+                    user.initStage();
                     settingField();
                     return;
                 }
