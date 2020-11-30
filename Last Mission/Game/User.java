@@ -6,6 +6,8 @@ public class User {
     int x = 0;
     int y = 0;
     int score = 0;
+    int bestScore = 0;
+    // TODO: 베스트 스코어 txt로 저장하기 구현하기
 
     public void initStage(){
         score = 1;
@@ -69,6 +71,5 @@ public class User {
             }
         }
     }
-
 
 }
