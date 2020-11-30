@@ -23,6 +23,12 @@ public class Map{
     }
 
     public void addBomb(Bomb b){
+        while (true){
+            b.initBomb();
+            if(!mapSize[b.x][b.y].equalsIgnoreCase(" $ ")){
+                break;
+            }
+        }
         int bombX = b.x;
         int bombY = b.y;
         mapSize[bombX][bombY] = " ! ";
