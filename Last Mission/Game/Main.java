@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -5,9 +6,10 @@ public class Main {
     static Map map = new Map();
     static Monster monster = new Monster();
     static Bomb bomb = new Bomb();
+    static DB db = new DB();
+    static int bestScore = 0;
 
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         // TODO: GUI 구현하기
 
@@ -28,7 +30,7 @@ public class Main {
 
     }
 
-    public static void move(){
+    public static void move() throws IOException {
         map.mapSize[user.x][user.y] = " . ";
         user.moveUser();
         checkStatus();
@@ -36,12 +38,13 @@ public class Main {
     }
 
 
-    public static void menu(){
+    public static void menu() throws IOException {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("========================================");
         System.out.println("               RPG GAME");
-        System.out.println("       최대 스코어  : "+ user.bestScore);
+        System.out.print("          최대 스코어  : ");
+        db.ScoreReader();
         System.out.println("| W: UP | A: LEFT | S: DOWN | D: RIGHT |");
         System.out.println("|   GAME START: 1 |   GAME FINISH: 0   |");
         System.out.println("========================================");
@@ -77,17 +80,18 @@ public class Main {
 
         if(user.score>1){
             for (int i = 1; i< user.score; i++) {
-                map.addBomb(bomb);
+                map.addBomb(bomb,monster);
             }
         }
     }
 
-    public static void checkStatus(){
+    public static void checkStatus() throws IOException {
         Scanner scanner = new Scanner(System.in);
 
         if(user.x == monster.x && user.y == monster.y){
             System.out.println("게임에서 이겼습니다!");
-            user.bestScore = user.score;
+            bestScore = user.score;
+            db.ScoreWriter();
             user.score++;
 
             while (true) {
