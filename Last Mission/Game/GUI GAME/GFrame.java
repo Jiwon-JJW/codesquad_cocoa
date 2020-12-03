@@ -1,9 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -22,11 +21,10 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
     int ghostSpeed;
 
     int cnt; // 타이밍 조절을 위해 무한 루프를 카운터 할 변수
-    int score;
-    int bestScore;
+    static int score;
+    static int bestScore;
     // TODO: 최대 스코어 생성
     // TODO: 메인 이미지 및 게임 오버 이미지 생성
-    // TODO: 게임오버 시, 작동 멈추는 것 생성
 
     boolean KeyUp = false; // 키보드 입력 처리를 위한 변수
     boolean KeyDown = false;
@@ -41,10 +39,6 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
     Image DImg = tk.getImage("/Users/jeongjiwon/Java_S/Code Squad/RPG/src/농담곰.png");
     Image GImg = tk.getImage("/Users/jeongjiwon/Java_S/Code Squad/RPG/src/유령.png");
     Image CImg = tk.getImage("/Users/jeongjiwon/Java_S/Code Squad/RPG/src/코인.png");
-    Image gameStart = tk.getImage("/Users/jeongjiwon/Java_S/Code Squad/RPG/src/Main.png");
-
-    JButton start = new JButton("> START");
-    JButton exit = new JButton("> EXIT");
 
     int charWidth = DImg.getWidth(this);
     int charHeight = DImg.getHeight(this);
@@ -54,16 +48,15 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
     ArrayList ghostList = new ArrayList(); // 다수의 유령 제작을 위한 리스트
 
     Ghost g; // 유령 클래스 접근 키
+
     GameOver gameOver = new GameOver(this, "!! VICTORY !!");; // 상태 팝업창
 
     Image buffImage; // 더블버퍼링
     Graphics buffG; // 더블 버퍼링
 
-    GFrame() {
+    GFrame() throws IOException {
         init(); // 프레임에 들어갈 컴포넌트 세팅
         start(); // 기본적인 시작 명령 처리
-
-
 
         setTitle("RPG GAME");
         setSize(fWidth, fHeight);
@@ -88,6 +81,8 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
 
         x = (fWidth - charWidth)/2; //캐릭터의 최초 좌표
         y = (fHeight - charHeight)/2;
+
+        score = 0;
 
         coin();
     }
@@ -130,14 +125,16 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
         } // 화면 밖으로 생성되지 않도록 조절
     }
 
-    public void CoinProcess(){
+    public void CoinProcess() {
         if(Crash(x,y,coinX,coinY,DImg,CImg )){
             score++;
+            bestScore = score;
+            System.out.println(bestScore);
             coin();
         }
     }
 
-    public void GhostProcess(){
+    public void GhostProcess() throws IOException {
         for (int i = 0; i<ghostList.size(); ++i){
             g = (Ghost)(ghostList.get(i));
             // 배열에 적이 생성되어있을 때 해당되는 적을 판별?
@@ -150,7 +147,8 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
 
                 ghostList.remove(i);
                 -- characterLife; // 부딪히면 캐릭터의 생명력 깎기
-                if(characterLife<0){
+                if(characterLife<1){
+
                     gameStatus = false;
                     GameOver gameOver =new GameOver(this,"!!GAME OVER");
                     gameOver.setVisible(true);
@@ -203,8 +201,6 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
         // 버퍼에 그린 그림을 가져와 그리기
     }
 
-
-
     public void DrawChar(){
         buffG.clearRect(0, 0, fWidth, fHeight);
         buffG.drawImage(DImg, x,y , this);
@@ -223,10 +219,10 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
         }
     }
 
-    public void DrawString(){
+    public void DrawString() {
         buffG.setFont(new Font("Default", Font.BOLD,20));
-        buffG.drawString("SCORE: "+score, 870, 70);
-        buffG.drawString("LIFE: "+characterLife, 870, 90);
+        buffG.drawString("SCORE: "+score, 10, 70);
+        buffG.drawString("LIFE: "+characterLife, 10, 100);
     }
 
     public boolean Crash (int x1, int y1, int x2, int y2, Image img1, Image img2){
@@ -290,8 +286,6 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
                 KeyRight = false;
                 break;
 
-            default:
-                throw new IllegalStateException("Unexpected value: " + e.getKeyCode());
         }
     }
     public void keyTyped(KeyEvent e){
