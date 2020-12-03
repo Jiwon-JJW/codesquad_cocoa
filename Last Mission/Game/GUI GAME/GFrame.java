@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -31,12 +33,19 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
     boolean KeyLeft = false;
     boolean KeyRight = false;
 
+    boolean gameStatus = true;
+
     Thread th; // 스레드 생성
     Toolkit tk = Toolkit.getDefaultToolkit(); // 이미지를 불러오기 위한 툴킷
 
-    Image DImg = tk.getImage("/Users/Java_S/Code Squad/RPG/src/농담곰.png");
-    Image GImg = tk.getImage("/Users/Java_S/Code Squad/RPG/src/유령.png");
-    Image CImg = tk.getImage("/Users/Java_S/Code Squad/RPG/src/코인.png");;
+    Image DImg = tk.getImage("/Users/jeongjiwon/Java_S/Code Squad/RPG/src/농담곰.png");
+    Image GImg = tk.getImage("/Users/jeongjiwon/Java_S/Code Squad/RPG/src/유령.png");
+    Image CImg = tk.getImage("/Users/jeongjiwon/Java_S/Code Squad/RPG/src/코인.png");
+    Image gameStart = tk.getImage("/Users/jeongjiwon/Java_S/Code Squad/RPG/src/Main.png");
+
+    JButton start = new JButton("> START");
+    JButton exit = new JButton("> EXIT");
+
     int charWidth = DImg.getWidth(this);
     int charHeight = DImg.getHeight(this);
     int coinWidth = CImg.getWidth(this);
@@ -51,8 +60,10 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
     Graphics buffG; // 더블 버퍼링
 
     GFrame() {
-        init(); // 나중에 프레임에 들어갈 컴포넌트 세팅
-        start(); // 나중을 위한 기본적인 시작 명령 처리
+        init(); // 프레임에 들어갈 컴포넌트 세팅
+        start(); // 기본적인 시작 명령 처리
+
+
 
         setTitle("RPG GAME");
         setSize(fWidth, fHeight);
@@ -73,7 +84,7 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
 
     public void init() {
         fWidth = 1000; // 프레임 넓이
-        fHeight = 1000; // 프레임 높이
+        fHeight = 700; // 프레임 높이
 
         x = (fWidth - charWidth)/2; //캐릭터의 최초 좌표
         y = (fHeight - charHeight)/2;
@@ -92,7 +103,7 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
 
     public void run() {
         try {
-            while (true) { // 무한루프
+            while (gameStatus) { // 무한루프
                 KeyProcess(); // 키보드 입력처리로 x,y 갱신
                 GhostProcess(); // 적 움직임 처리 메소드
                 CoinProcess(); // 코인 처리 메소드
@@ -111,10 +122,10 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
         coinX = random.nextInt(fWidth);
         coinY = random.nextInt(fHeight);
 
-        while (coinX > fWidth-coinWidth){
+        while (coinX<30 ||coinX > fWidth-coinWidth-30){
             coinX = random.nextInt(fWidth);
         }
-        while (coinY < 50||coinY > fHeight - coinHeight){
+        while (coinY < 30||coinY > fHeight - coinHeight-30){
             coinY = random.nextInt(fHeight);
         } // 화면 밖으로 생성되지 않도록 조절
     }
@@ -140,6 +151,7 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
                 ghostList.remove(i);
                 -- characterLife; // 부딪히면 캐릭터의 생명력 깎기
                 if(characterLife<0){
+                    gameStatus = false;
                     GameOver gameOver =new GameOver(this,"!!GAME OVER");
                     gameOver.setVisible(true);
                 }
@@ -149,7 +161,7 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
 
         if(cnt%200 == 0){ // 루프 카운트 300회마다
             ghostX = fWidth+(random.nextInt(9))*100;
-            ghostY = (random.nextInt(9))*100;
+            ghostY = (random.nextInt(6))*100;
             ghostSpeed = random.nextInt(10);
 
             g = new Ghost(ghostX,ghostY,ghostSpeed);
@@ -181,6 +193,7 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
     }
 
     public void update(Graphics g){
+
         DrawChar(); // 실제로 그려진 그림을 가지고 옴
         DrawGhost();
         DrawCoin();
@@ -189,6 +202,8 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
         g.drawImage(buffImage, 0, 0, this);
         // 버퍼에 그린 그림을 가져와 그리기
     }
+
+
 
     public void DrawChar(){
         buffG.clearRect(0, 0, fWidth, fHeight);
@@ -205,7 +220,6 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
     public void DrawCoin(){
         buffG.drawImage(CImg, coinX, coinY, this);
         if(score > 1) {
-
         }
     }
 
@@ -276,6 +290,8 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
                 KeyRight = false;
                 break;
 
+            default:
+                throw new IllegalStateException("Unexpected value: " + e.getKeyCode());
         }
     }
     public void keyTyped(KeyEvent e){
@@ -284,22 +300,22 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
 
     public void KeyProcess(){
         //실제로 움직임을 실현하기 위해 키 값을 바탕으로 5만큼 이동시킨다.
-        if(KeyUp == true) {
+        if(KeyUp) {
             if(y>20) {
                 y -= 5;
             }
         }
-        if(KeyDown == true) {
+        if(KeyDown) {
             if(y+DImg.getHeight(null)<fHeight) {
                 y += 5;
             }
         }
-        if(KeyLeft == true) {
+        if(KeyLeft) {
             if(x>0) {
                 x -= 5;
             }
         }
-        if(KeyRight == true) {
+        if(KeyRight) {
             if(x+DImg.getWidth(null)<fWidth) {
                 x += 5;
             }

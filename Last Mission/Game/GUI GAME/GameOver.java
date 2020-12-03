@@ -31,6 +31,7 @@ public class GameOver extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
+                GFrame gf = new GFrame();
             }
         });
         no.addActionListener(new ActionListener() {
