@@ -23,8 +23,6 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
     int cnt; // 타이밍 조절을 위해 무한 루프를 카운터 할 변수
     static int score;
     static int bestScore;
-    // TODO: 최대 스코어 생성
-    // TODO: 메인 이미지 및 게임 오버 이미지 생성
 
     boolean KeyUp = false; // 키보드 입력 처리를 위한 변수
     boolean KeyDown = false;
@@ -49,8 +47,6 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
 
     Ghost g; // 유령 클래스 접근 키
 
-    GameOver gameOver = new GameOver(this, "!! VICTORY !!");; // 상태 팝업창
-
     Image buffImage; // 더블버퍼링
     Graphics buffG; // 더블 버퍼링
 
@@ -58,7 +54,7 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
         init(); // 프레임에 들어갈 컴포넌트 세팅
         start(); // 기본적인 시작 명령 처리
 
-        setTitle("RPG GAME");
+        setTitle("COIN GAME");
         setSize(fWidth, fHeight);
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         // 프레임 위치 설정을 위해 현재의 모니터 해상도 값을 받아오는 것.
@@ -129,7 +125,6 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
         if(Crash(x,y,coinX,coinY,DImg,CImg )){
             score++;
             bestScore = score;
-            System.out.println(bestScore);
             coin();
         }
     }
@@ -148,10 +143,8 @@ public class GFrame extends JFrame implements KeyListener,Runnable {
                 ghostList.remove(i);
                 -- characterLife; // 부딪히면 캐릭터의 생명력 깎기
                 if(characterLife<1){
-
                     gameStatus = false;
-                    GameOver gameOver =new GameOver(this,"!!GAME OVER");
-                    gameOver.setVisible(true);
+                    GameOver go = new GameOver();
                 }
 
             }
